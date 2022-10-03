@@ -1,11 +1,7 @@
 import React from "react";
-import { Grid, Card, CardContent, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
 import SearchResults from "../searchResults";
 
 const Search = ({ searchResults }) => {
-  const people = ["Aaron", "Tim", "James", "Hayden", "Scooter", "Bob"];
-
   const cheapFood = searchResults.filter((value) => {
     return value.price === "$";
   });
