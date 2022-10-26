@@ -68,8 +68,8 @@ const Layout = () => {
                     onKeyPress={(e) => {
                       if (e.key === "Enter") doSearch(e);
                     }}
-                    label="Search"
-                    variant="outlined"
+                    placeholder="Search"
+                    variant="standard"
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -88,12 +88,12 @@ const Layout = () => {
                     textDecoration: "none",
                   }}
                 >
-                  <Button
+                  {/* <Button
                     sx={{ mr: 10, justifyContent: "center" }}
                     color="inherit"
                   >
                     Maps
-                  </Button>
+                  </Button> */}
                 </Link>
                 <Link
                   to="/"
