@@ -1,7 +1,7 @@
 import React from "react";
 import SearchResults from "../searchResults";
 
-const Search = ({ searchResults }) => {
+const Search = ({ searchResults, setRestId }) => {
   const cheapFood = searchResults.filter((value) => {
     return value.price === "$";
   });
@@ -14,9 +14,21 @@ const Search = ({ searchResults }) => {
 
   return (
     <>
-      <SearchResults food={cheapFood} title={"Cheapest food"} />
-      <SearchResults food={mediumfood} title={"Medium food"} />
-      <SearchResults food={expensivefood} title={"Expensive food"} />
+      <SearchResults
+        food={cheapFood}
+        title={"Cheapest food"}
+        setRestId={setRestId}
+      />
+      <SearchResults
+        food={mediumfood}
+        title={"Medium food"}
+        setRestId={setRestId}
+      />
+      <SearchResults
+        food={expensivefood}
+        title={"Expensive food"}
+        setRestId={setRestId}
+      />
     </>
   );
 };

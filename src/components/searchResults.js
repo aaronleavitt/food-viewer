@@ -5,11 +5,26 @@ import {
   CardContent,
   CardMedia,
   Grid,
+  Rating,
   Typography,
 } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Map, Marker } from "pigeon-maps";
+import Box from "@mui/material/Box";
 
-const SearchResults = ({ food, title }) => {
+const SearchResults = ({ food, title, setRestId }) => {
+  const Navigate = useNavigate();
+
+  const goToDetails = (id) => {
+    setRestId(id);
+    Navigate("/detail");
+  };
+
+  const goToMaps = (id) => {
+    setRestId(id);
+    Navigate("/map");
+  };
   return (
     <>
       {food.length > 0 ? <Typography variant="h3">{title}</Typography> : <></>}
@@ -35,17 +50,40 @@ const SearchResults = ({ food, title }) => {
                     {value.location.city}, {value.location.state}{" "}
                     {value.location.zip_code}
                   </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="body3"
-                    component="div"
-                    sx={{ color: "dodgerblue" }}
+                  <Box
+                    sx={{ mb: 2, mt: 2, display: "flex", alignItems: "center" }}
                   >
-                    Rating: {value.rating} ({value.review_count})
-                  </Typography>
+                    <Rating
+                      defaultValue={value.rating}
+                      precision={0.5}
+                      readOnly
+                      size="small"
+                    ></Rating>
+                    <Box sx={{ ml: 2, color: "dodgerblue" }}>
+                      ({value.review_count})
+                    </Box>
+                  </Box>
+                  <Map
+                    height={150}
+                    defaultCenter={[
+                      value.coordinates.latitude,
+                      value.coordinates.longitude,
+                    ]}
+                    defaultZoom={14}
+                  >
+                    <Marker
+                      width={50}
+                      anchor={[
+                        value.coordinates.latitude,
+                        value.coordinates.longitude,
+                      ]}
+                    />
+                  </Map>
                 </CardContent>
                 <CardActions>
-                  <Button size="small">Details</Button>
+                  <Button size="small" onClick={(e) => goToDetails(value.id)}>
+                    Details
+                  </Button>
                 </CardActions>
               </Card>
             </Grid>

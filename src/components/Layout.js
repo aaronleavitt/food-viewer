@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Box,
@@ -14,15 +14,28 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Search from "./pages/Search";
 import SearchIcon from "@mui/icons-material/Search";
-import yelp from "../api/yelp";
+import Detail from "./pages/Detail";
+import Mappy from "./pages/Mappy";
+import Map from "./pages/Map";
+import { Link } from "react-router-dom";
 
 const Layout = () => {
-  const [searchText, setSearchText] = useState("I'm here");
+  const [searchText, setSearchText] = useState("Foodie");
   const [results, setResults] = useState([]);
+  const [restId, setRestId] = useState("Nothing $");
+  // let mySearchTest = "i'm Here";
 
   const searchApi = async (term) => {
-    const response = await yelp("92688", term);
-    setResults(response.data.businesses);
+    const location = "24416";
+    const response = await fetch(
+      `/api/yelpSearch?term=${term}&location=${location}`
+    );
+    const data = await response.json();
+    setResults(data.businesses);
+
+    const responsebusiness = await fetch(`api/yelpBusinessDetail`);
+    const databusiness = await responsebusiness.json();
+    console.log(databusiness);
   };
 
   const doSearch = (e) => {
@@ -31,7 +44,7 @@ const Layout = () => {
   };
 
   useEffect(() => {
-    searchApi("Mexican Food");
+    searchApi("Mexican");
   }, []);
 
   return (
@@ -46,7 +59,7 @@ const Layout = () => {
                   edge="start"
                   color="inherit"
                   aria-label="menu"
-                  sx={{ mr: 2 }}
+                  sx={{ mr: 3 }}
                 >
                   <MenuIcon />
                 </IconButton>
@@ -66,7 +79,33 @@ const Layout = () => {
                     }}
                   />
                 </Typography>
-                <Button color="inherit">Login</Button>
+                <Link
+                  to="/map"
+                  style={{
+                    mr: 10,
+                    justifyContent: "center",
+                    color: "inherit",
+                    textDecoration: "none",
+                  }}
+                >
+                  <Button
+                    sx={{ mr: 10, justifyContent: "center" }}
+                    color="inherit"
+                  >
+                    Maps
+                  </Button>
+                </Link>
+                <Link
+                  to="/"
+                  style={{
+                    mr: 10,
+                    justifyContent: "center",
+                    color: "inherit",
+                    textDecoration: "none",
+                  }}
+                >
+                  <Button color="inherit">Home</Button>
+                </Link>
               </Toolbar>
             </AppBar>
           </Box>
@@ -77,13 +116,16 @@ const Layout = () => {
             <Route
               exact
               path="/"
-              element={<Search searchResults={results} />}
+              element={<Search searchResults={results} setRestId={setRestId} />}
             />
             <Route
               exact
               path="/search"
-              element={<Search searchResults={results} />}
+              element={<Search searchResults={results} setRestId={setRestId} />}
             />
+            <Route exact path="/detail" element={<Detail restId={restId} />} />
+            <Route exact path="/Mappy" element={<Mappy restId={restId} />} />
+            <Route exact path="/Map" element={<Map restId={restId} />} />
           </Routes>
         </BrowserRouter>
       </Paper>

@@ -1,12 +1,14 @@
 import axios from "axios";
 
-const Axios = async (location, term) => {
-  const response = await axios({
-    method: "get",
-    url: `https://yelp-backend.netlify.app/.netlify/functions/search?location=${location}&term=${term}`,
-  });
+export default async (location, term) => {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `https://yelp-backend.netlify.app/.netlify/functions/search?location=${location}&term=${term}`,
+    });
 
-  return response;
+    return response;
+  } catch (error) {
+    console.log("maybe: ", error);
+  }
 };
-
-export default Axios;
